@@ -1,2 +1,0 @@
-readmy.txt
-testing
