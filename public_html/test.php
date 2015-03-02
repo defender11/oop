@@ -3,6 +3,8 @@
 		include "class/$n.class.php";
 	}
 
-	$test = new Test();
-	echo $test->Name = "Mike Slavotski";
- ?>
+
+	function fo(array $n) {}
+
+	fo("1");
+ ?>fasf

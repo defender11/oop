@@ -2,3 +2,4 @@ AddDefaultCharSet UTF-8
 
 DirectoryIndex index.php
 
+php_flag display_errors 1
