@@ -1,0 +1,23 @@
+body {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0; }
+
+.content {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0; }
+
+.content-navigation {
+  border-color: blue;
+  color: blue;
+  position: relative; }
+  .content-navigation a {
+    margin: 16px;
+    position: relative; }
+  .content-navigation ul {
+    position: relative; }
+
+/*# sourceMappingURL=style.css.map */

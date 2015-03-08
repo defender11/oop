@@ -1,0 +1,34 @@
+$blu: blue
+$mrg: 16px
+$pos: relative
+$disp: block
+$mrgn: 0
+$pdg: 0
+
+
+=block($pos, $disp, $mrgn, $pdg)
+  position: $pos
+  display: $disp
+  margin: $mrgn
+  padding: $pdg
+
+body
+  +block($pos, $disp, $mrgn, $pdg)
+
+.content
+  +block($pos, $disp, $mrgn, $pdg)
+
+.content-navigation
+  border-color: $blu
+  color: $blu
+  position: $pos
+
+  a
+    margin: $mrg
+    position: $pos
+  
+  ul
+    position: $pos
+
+
+
