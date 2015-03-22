@@ -1,29 +1,37 @@
 <?php
 header("Content-Type: text/html;charset=utf-8");
-	// Создание парсера
-	$sax = xml_parser_create('utf-8');
-	// Назначение обработчиков начальных и конечных тегов
-	xml_set_element_handler($sax, 'onStart', 'onEnd');
-	//  Назначение обработчика текстового содержимого
-	xml_set_character_data_handler($sax, 'onText');
-	// Функция обработчик начальных тегов
-	function onStart($parser, $tag, $attr) {
-		if($tag != 'BOOK' and $tag != 'CATALOG')
-			echo '<td>';
-		if($tag == 'BOOK')
-			echo '<tr>';
-	}
-	// Функция обработчик закрывающих тегов
-	function onEnd($parser, $tag) {
-		if($tag != 'BOOK' and $tag != 'CATALOG')
-			echo '</td>';
-		if($tag == 'BOOK')
-			echo '</tr>';
-	}
-	// Функция обработчик текстового содержимого
-	function onText($parser, $text) {
-		echo $text;
-	}
+	// // Создание парсера
+	// $sax = xml_parser_create('utf-8');
+	// // Назначение обработчиков начальных и конечных тегов
+	// xml_set_element_handler($sax, 'onStart', 'onEnd');
+	// //  Назначение обработчика текстового содержимого
+	// xml_set_character_data_handler($sax, 'onText');
+	// // Функция обработчик начальных тегов
+	// function onStart($parser, $tag, $attr) {
+	// 	if($tag != 'BOOK' and $tag != 'CATALOG')
+	// 		echo '<td>';
+	// 	if($tag == 'BOOK')
+	// 		echo '<tr>';
+	// }
+	// // Функция обработчик закрывающих тегов
+	// function onEnd($parser, $tag) {
+	// 	if($tag != 'BOOK' and $tag != 'CATALOG')
+	// 		echo '</td>';
+	// 	if($tag == 'BOOK')
+	// 		echo '</tr>';
+	// }
+	// // Функция обработчик текстового содержимого
+	// function onText($parser, $text) {
+	// 	echo $text;
+	// }
+
+	$dom = new DomDocument();
+	$dom->load('catalog.xml');
+	$root = $dom->documentElement;
+	$books = $root->childNodes;
+	// echo $root->textContent;
+	$dom
+
 ?>
 <html>
 	<head>
@@ -40,8 +48,20 @@ header("Content-Type: text/html;charset=utf-8");
 			<th>Цена, руб</th>
 		</tr>
 	<?php
-		xml_parse($sax, file_get_contents('catalog.xml'));
-		xml_error_string(xml_get_error_code($sax));
+	// 	xml_parse($sax, file_get_contents('catalog.xml'));
+	// 	xml_error_string(xml_get_error_code($sax));
+
+	foreach ($books as $book) {
+		if ($book->nodeType == 1 ) {
+		echo "<tr>";
+		foreach ($book->childNodes as $item) {
+			if ($item->nodeType == 1 ) {
+				echo "<td>".$item->textContent."</td>";
+			}
+		}
+		echo "</tr>";
+		}
+	}
 	?>
 	</table>
 	</body>

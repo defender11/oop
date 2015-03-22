@@ -3,6 +3,10 @@
 
 class NewsDB implements INewsDB {
   const DB_NAME = 'news.db';
+  const RSS_NAME = "rss.xml";
+  const RSS_TITLE = "Новостная лента";
+  const RSS_LINK = "http://oop/public_html/news/news.php";
+
   protected $_db;
 
   public function __construct () {
@@ -52,6 +56,7 @@ class NewsDB implements INewsDB {
       $res = $this->_db->query($sql);
       if(!$this->_db->lastErrorMsg())
         throw new Exception ($this->_db->lastErrorMsg());
+      $this->createRSS();
       return true;
     } catch (Exception $e) {
       return false;
@@ -89,6 +94,40 @@ class NewsDB implements INewsDB {
       // $e->getMessage();
       return false;
     }
+  }
+  public function createRSS() {
+    $dom = new DomDocument('1.0', 'UTF-8');
+    $dom->formatOutput = true;
+    $dom->preserveWhiteSpace = false;
+    $rss = $dom->createElement('rss');
+    $dom->appendChild($rss);
+    $channel = $dom->createElement('channel');
+    $rss->appendChild($channel);
+    $title = $dom->createElement('title', self::RSS_TITLE);
+    $link = $dom->createElement('link', self::RSS_LINK);
+    $channel->appendChild($title);
+    $channel->appendChild($link);
+    $lenta = $this->getNews();
+    if (!$lenta) return false;
+    foreach ($lenta as $item) {
+      $i = $dom->createElement('item');
+      $title = $dom->createElement('title', $item['title']);
+      $category = $dom->createElement('category', $item['category']);
+      $description = $dom->createElement('description', $item['description']);
+      $txt = self::RSS_LINK.'?id='.$item['id'];
+      $link = $dom->createElement('link', $txt);
+      $dt = date('r', $item['datetime']);
+      $pd = $dom->createElement('pubDate', $dt);
+      $i->appendChild($title);
+      $i->appendChild($link);
+      $i->appendChild($description);
+      $i->appendChild($pd);
+      $i->appendChild($category);
+      $channel->appendChild($i);
+    }
+    $dom->save(self::RSS_NAME);
+
+
   }
 }
 
